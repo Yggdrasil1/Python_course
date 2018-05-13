@@ -1,0 +1,9 @@
+###############################################################################
+# Dies ist das Fragen-Dokument welches beliebig erweitert werden kann.        #  
+# Beachtet werden muss nur die Form: erst die Frage, dann richtige Antwort,   #
+# dann die 3 falschen. Bei Fragen die länger sind als dieser Block, füg bitte #
+# ein $ Zeichen ein (Beispiel siehe erste Frage). Block ~ 80 Zeichen          #
+###############################################################################
+-------------------------------------------------------------------------------
+Welches ist das Chromophor im menschlichen Auge?,Retinal,Flavin,Häm, Beta-Karotin
+Wie lange bleibt ein Molekül ca. im angeregten Zustand bis es durch Fluoreszenz in den Grundzustand zurückkehrt?, 1ns - 100ns,1s - 100s,1ms - 100ms, 1ps - 100ps
