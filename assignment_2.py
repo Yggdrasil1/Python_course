@@ -6,7 +6,7 @@ solution_student = []
 # c = a + b
 # type(c)
 
-solution_student.append(None)
+solution_student.append(float)
 
 # Assignment 02:
 # a = 5
@@ -14,14 +14,14 @@ solution_student.append(None)
 # c = a // b
 # c
 
-solution_student.append(None)
+solution_student.append(1)
 
 # Assignment 03:
 # a = True
 # b = False
 # (a | (a & b))
 
-solution_student.append(None)
+solution_student.append(True)
 
 # Assignment 04:
 # a = 5
@@ -30,7 +30,7 @@ solution_student.append(None)
 # a = 7
 # b[0]
 
-solution_student.append(None)
+solution_student.append(5)
 
 # Assignment 05:
 # a = [1, 2, 3]
@@ -38,14 +38,14 @@ solution_student.append(None)
 # a.append(4)
 # b['list_a']
 
-solution_student.append(None)
+solution_student.append([1,2,3,4])
 
 # Assignment 06:
 # a = [1, 2, 1, 3, 3, 4, 1]
 # b = set(a)
 # b
 
-solution_student.append(None)
+solution_student.append({1,2,3,4})
 
 # Assignment 07:
 # a = 'glutamat'
@@ -53,21 +53,21 @@ solution_student.append(None)
 # b = b + 'e'
 # a is b
 
-solution_student.append(None)
+solution_student.append(False)
 
 # Assignment 08:
 # a = (1.3, 7.8)
 # b = a + ('glo',)
 # b
 
-solution_student.append(None)
+solution_student.append((1.3,7.8,'glo'))
 
 # Assignment 09:
 # a = 'ananas'
 # a.replace('a', 'ana')
 # a
 
-solution_student.append(None)
+solution_student.append('ananas')
 
 # Assignment 10:
 # a = ['x', 9]
@@ -75,14 +75,14 @@ solution_student.append(None)
 # a.append(100)
 # b
 
-solution_student.append(None)
+solution_student.append((['x', 9, 100], 'glob'))
 
 # Assignment 11:
 # a = {1: 'Finn', 2: 'Jake'}
 # a.pop(1)
 # 1 in a
 
-solution_student.append(None)
+solution_student.append(False)
 
 # Assignment 12:
 # x = 0
@@ -90,7 +90,7 @@ solution_student.append(None)
 #     x = x + 1
 # x
 
-solution_student.append(None)
+solution_student.append(1)
 
 # Assignment 13:
 # a = [1, 2, 3]
@@ -100,14 +100,14 @@ solution_student.append(None)
 # else:
 #     print('OH NO')
 
-solution_student.append(None)
+solution_student.append('OH NO')
 
 # Assignment 14:
 # a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # b = a[3:5]
 # b
 
-solution_student.append(None)
+solution_student.append([4,5])
 
 # Assignment 15:
 # a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -120,7 +120,7 @@ solution_student.append(None)
 # c = set(b)
 # c
 
-solution_student.append(None)
+solution_student.append({True,False})
 
 # Assignment 16:
 # a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -130,7 +130,7 @@ solution_student.append(None)
 #         b = b + 1
 # b
 
-solution_student.append(None)
+solution_student.append(5)
 
 # Assignment 17:
 # a = ['ivo', 'mato', 'jure', 'ante', 'stop', 'marcelo', 'nicola', 'stephan']
@@ -141,7 +141,7 @@ solution_student.append(None)
 #     b.append(name)
 # b
 
-solution_student.append(None)
+solution_student.append(['ivo', 'mato', 'jure', 'ante'])
 
 # Assignment 18:
 # a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -152,7 +152,7 @@ solution_student.append(None)
 #     b.append(x**2)
 # b
 
-solution_student.append(None)
+solution_student.append([1,9,25,49,81])
 
 # Assignment 19:
 # student_points = {'Hans': 91, 'Maria': 75.5, 'Stephan': 53, 'Julia': 89}
@@ -163,7 +163,7 @@ solution_student.append(None)
 #         passed.append(student)
 # set(passed)
 
-solution_student.append(None)
+solution_student.append({'Hans','Julia'})
 
 # Assignment 20:
 # a = [1, 2, 3, 4]
@@ -171,7 +171,7 @@ solution_student.append(None)
 # b.append(80)
 # a
 
-solution_student.append(None)
+solution_student.append([1,2,3,4,80])
 
 
 if __name__ == '__main__':
