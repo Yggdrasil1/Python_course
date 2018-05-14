@@ -83,7 +83,7 @@ solution_student.append(False)
 # a.pop(1)
 # 1 in a
 
-solution_student.append(2)
+solution_student.append(1)
 
 # Assignment 12:
 # x = 0
@@ -101,14 +101,14 @@ solution_student.append('OH NO')
 # else:
 #     print('OH NO')
 
-solution_student.append([4,5,6])
+solution_student.append([4,5])
 
 # Assignment 14:
 # a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # b = a[3:5]
 # b
 
-solution_student.append([True,False])
+solution_student.append({False,True})
 
 # Assignment 15:
 # a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
