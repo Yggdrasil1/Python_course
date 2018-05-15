@@ -9,12 +9,24 @@
 def rock_paper_scissors(user_input, computer_input):
 	if user_input is 'rock' and computer_input is 'paper':
 		return 'computer wins'
+    
+   elif user_input is 'paper' and computer_input is 'scissors':
+       return 'computer wins'
+       
+   elif user_input is 'scissors' and computer_input is 'rock':
+       return 'computer wins'
+       
+   elif user_input is 'rock' and computer_input is 'scissors':
+       return 'user wins'
 
+   elif user_input is 'scissors' and computer_input is 'paper':
+       return 'user wins'
 
+   elif user_input is 'paper' and computer_input is 'rock':
+       return 'user wins'
 
-
-
-
+   else:
+       return 'tied'
 
 if __name__ == "__main__":
 	possibilities = ['rock', 'paper', 'scissors']

@@ -22,7 +22,7 @@ class App:
             for a in range(7,len(data)):
                 App.questions.append(data[a].strip().split(","))
                 
-       # App.question_numbers=list(range(0,len(App.questions)))
+
     
     def __init__(self, master):
         
