@@ -21,7 +21,7 @@ class App:
 
     def read_file():
 
-        filename = "/local/home/biostudent216/Python_course/Fragen.txt"
+        filename = "./Fragen.txt"
 
         with open(filename) as csvfile:
             data = csvfile.readlines()
