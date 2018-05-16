@@ -34,7 +34,7 @@ class App:
 
         filename = "./Fragen.txt"
 
->>>>>>> 32b7ed5b6991ebeb6aba22b435819797fec771fa
+
         with open(filename) as csvfile:
             data = csvfile.readlines()
             for a in range(7, len(data)):
@@ -42,19 +42,19 @@ class App:
 
     def __init__(self, master):
 
-<<<<<<< HEAD
+
         App.read_file("./Fragen.txt")
         App.old_questions = copy.deepcopy(App.questions)
 
-=======
+
         App.read_file()
         App.old_questions = copy.deepcopy(App.questions)
->>>>>>> 32b7ed5b6991ebeb6aba22b435819797fec771fa
+
         frame = Frame(master, bg="SpringGreen3", width=200)
         frame.pack()
 
         # Schließen-Button: Closes the applet
-<<<<<<< HEAD
+
         self.button = Button(frame, text="Schließen", fg="red", command=frame.quit)
         self.button.grid(row=5, column=0, columnspan=2, pady=10)
 
