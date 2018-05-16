@@ -8,8 +8,18 @@ from random import randint
 import copy
 
 
-class App:
+def read_file():
+    filename = "./Fragen.txt"
 
+    with open(filename) as csvfile:
+        data = csvfile.readlines()
+        for a in range(7, len(data)):
+            App.questions.append(data[a].strip().split(","))
+
+    App.max_points = len(App.questions)
+
+
+class App:
     questions = []
 
     question_number = 0
@@ -18,18 +28,15 @@ class App:
 
     right_answer = ""
 
-    def read_file():
+    first_button_click = True
 
-        filename = "/local/home/biostudent216/Python_course/Fragen.txt"
+    max_points = 0
 
-        with open(filename) as csvfile:
-            data = csvfile.readlines()
-            for a in range(7, len(data)):
-                App.questions.append(data[a].strip().split(","))
+    current_points = 0
 
     def __init__(self, master):
 
-        App.read_file()
+        read_file()
         App.old_questions = copy.deepcopy(App.questions)
         frame = Frame(master, bg="SpringGreen3", width=200)
         frame.pack()
@@ -45,6 +52,13 @@ class App:
         self.slogan = Label(frame,
                             text="Das Biophysik Quiz")
         self.slogan.grid(row=0, columnspan=2)
+
+        # Punktestand
+        self.points = Label(frame,
+                            text=str(App.current_points)+" / "+str(App.max_points),
+                            bg="SpringGreen3",
+                            fg="White")
+        self.points.grid(row=0, column=4)
 
         # Nächste-Frage-Button: Writes the next question in the questions
         # and the answers in the fields
@@ -72,7 +86,7 @@ class App:
                                 text="erste Antwort",
                                 bg="light sky blue",
                                 command=lambda: self.check_answers(
-                                        self.first_ans.config('text')[-1], 1))
+                                    self.first_ans.config('text')[-1], 1))
         self.first_ans.grid(row=3,
                             column=0,
                             padx=5,
@@ -83,7 +97,7 @@ class App:
                               text="zweite Antwort",
                               bg="light sky blue",
                               command=lambda: self.check_answers(
-                                      self.sec_ans.config('text')[-1], 2))
+                                  self.sec_ans.config('text')[-1], 2))
         self.sec_ans.grid(row=3,
                           column=1,
                           padx=5,
@@ -94,7 +108,7 @@ class App:
                                 text="dritte Antwort",
                                 bg="light sky blue",
                                 command=lambda: self.check_answers(
-                                        self.third_ans.config('text')[-1], 3))
+                                    self.third_ans.config('text')[-1], 3))
         self.third_ans.grid(row=4,
                             column=0,
                             padx=5,
@@ -105,7 +119,7 @@ class App:
                                  text="vierte Antwort",
                                  bg="light sky blue",
                                  command=lambda: self.check_answers(
-                                        self.fourth_ans.config('text')[-1], 4))
+                                     self.fourth_ans.config('text')[-1], 4))
         self.fourth_ans.grid(row=4,
                              column=1,
                              padx=5,
@@ -117,12 +131,13 @@ class App:
         self.sec_ans.config(bg="light sky blue")
         self.third_ans.config(bg="light sky blue")
         self.fourth_ans.config(bg="light sky blue")
+        App.first_button_click = True
 
-        number = randint(0, len(App.questions)-1)
+        number = randint(0, len(App.questions) - 1)
         App.question_number = number
         App.right_answer = App.questions[number][1]
 
-        if(len(App.questions) != 0):
+        if (len(App.questions) != 0):
 
             frage = App.questions[number][0]
 
@@ -131,29 +146,29 @@ class App:
             ans_place = list(range(1, 5))
 
             for i in range(4):
-                place = randint(0, 3-i)
+                place = randint(0, 3 - i)
 
-                if(i == 0):
+                if (i == 0):
                     self.first_ans.config(
-                                text=App.questions[number][ans_place[place]])
+                        text=App.questions[number][ans_place[place]])
 
                     ans_place.remove(ans_place[place])
 
-                elif(i == 1):
+                elif (i == 1):
                     self.sec_ans.config(
-                                text=App.questions[number][ans_place[place]])
+                        text=App.questions[number][ans_place[place]])
 
                     ans_place.remove(ans_place[place])
 
-                elif(i == 2):
+                elif (i == 2):
                     self.third_ans.config(
-                                text=App.questions[number][ans_place[place]])
+                        text=App.questions[number][ans_place[place]])
 
                     ans_place.remove(ans_place[place])
 
                 else:
                     self.fourth_ans.config(
-                                text=App.questions[number][ans_place[place]])
+                        text=App.questions[number][ans_place[place]])
 
                     ans_place.remove(ans_place[place])
 
@@ -161,11 +176,11 @@ class App:
 
         else:
             self.question_label.config(
-                    text="Leider gibt es keine Fragen mehr :(")
+                text="Leider gibt es keine Fragen mehr :(")
 
     def check_answers(self, text, button_nr):
 
-        if (text == App.right_answer):
+        if text == App.right_answer:
             if button_nr == 1:
                 self.first_ans.config(bg="lawn green")
             if button_nr == 2:
@@ -174,6 +189,12 @@ class App:
                 self.third_ans.config(bg="lawn green")
             if button_nr == 4:
                 self.fourth_ans.config(bg="lawn green")
+
+            if App.first_button_click:
+                App.first_button_click = False
+                App.current_points += 1
+                App.update_points(self)
+
         else:
             if button_nr == 1:
                 self.first_ans.config(bg="orange red")
@@ -183,6 +204,12 @@ class App:
                 self.third_ans.config(bg="orange red")
             if button_nr == 4:
                 self.fourth_ans.config(bg="orange red")
+
+    def update_points(self):
+        self.points.config(text=str(App.current_points)+" / "+str(App.max_points))
+
+
+
 
 
 root = Tk()
