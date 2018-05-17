@@ -51,14 +51,15 @@ class App:
         # Überschrifts-Label
         self.slogan = Label(frame,
                             text="Das Biophysik Quiz")
-        self.slogan.grid(row=0, columnspan=2)
+        self.slogan.grid(row=0, columnspan=2,)
 
         # Punktestand
         self.points = Label(frame,
                             text=str(App.current_points)+" / "+str(App.max_points),
                             bg="SpringGreen3",
-                            fg="White")
-        self.points.grid(row=0, column=4)
+                            fg="White",
+                            anchor="w",)
+        self.points.grid(row=0, column=1,sticky="e")
 
         # Nächste-Frage-Button: Writes the next question in the questions
         # and the answers in the fields
@@ -211,7 +212,7 @@ class App:
 
 
 
-
-root = Tk()
-app = App(root)
-root.mainloop()
+if __name__ == "__main__":
+    root = Tk()
+    app = App(root)
+    root.mainloop()
