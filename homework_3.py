@@ -11,6 +11,7 @@ def average(liste):
 	return (sum/len(liste))
 
 def median(liste):
+	assert len(liste) > 0, "List is emtpy"
 	sorted_list = sorted(liste)
 	if len(liste)%2 == 1:
 		return sorted_list[int(len(sorted_list)/2)]
