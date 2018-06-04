@@ -1,6 +1,7 @@
 
 def average(liste):
 	sum=0
+	assert type(liste) = list , "your given object is not a list"
 	assert len(liste) > 0, "List is emtpy"
 
 	for item in liste:
@@ -11,6 +12,7 @@ def average(liste):
 	return (sum/len(liste))
 
 def median(liste):
+        assert type(liste) = list , "your given object is not a list"
 	assert len(liste) > 0, "List is emtpy"
 	sorted_list = sorted(liste)
 	if len(liste)%2 == 1:
