@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 
 class Agent:
@@ -69,6 +70,18 @@ class Agent:
     def __repr__(self):
         return "id.{}".format(self.id)
 
+    def apply_dmg(self,damage):
+        lifeloss = damage
+        for _ in range(self.defense):
+            if lifeloss == 1:
+                continue
+            else:
+                if np.random.uniform(0,1) < 0.1:
+                    lifeloss -= 1
+
+        self.health -= lifeloss
+
+
 
 
 class Welt:
@@ -117,9 +130,39 @@ class Welt:
             print(print_string)
 
 
+    def fight(agent1,agent2):
+        damage = 0
+        if agent2.attack > agent1.attack:
+            damage = math.ceil(agent2.attack / 3)
+            if np.random.uniform(0,agent2.attack) > (agent1.attack / 2):
+                agent1.apply_dmg()
+            else:
+                agent2.apply_dmg()
 
-    def fight(agent1, agent2):
+        elif agent1.attack > agent2.attack:
+            damage = math.ceil(agent1.attack / 3)
+            if np.random.uniform(0,agent1.attack) > (agent2.attack / 2):
+                agent2.apply_dmg()
+            else:
+                agent1.apply_dmg()
 
+        else:
+            damage = agent1.attack / 2
+            if np.random.uniform(0,1) > 0.5:
+                agent1.apply_dmg()
+            else:
+                agent2.apply_dmg()
+
+
+    def check_for_fights(self):
+        for x_coordinate in range(self.x_dimension):
+            for y_coordinate in range(self.y_dimension):
+                if len(self.map[(x_coordinate,y_coordinate)]) > 1:
+
+                    for agentx in my_welt.agents:
+
+
+        pass
 
 if __name__ == "__main__":
     my_welt = Welt()
@@ -129,9 +172,11 @@ if __name__ == "__main__":
     for _ in range(20):
         for agent in my_welt.agents:
           agent.move()
+        my_welt.update_world_map()
+        print("--------------------------------------------")
+        my_welt.print_map()
 
-    my_welt.update_world_map()
-    print("--------------------------------------------")
-    my_welt.print_map()
+
+
     print("::::::::::::::::::::::::::::::::::::::::::::")
     print(my_welt.agents[0].history)
