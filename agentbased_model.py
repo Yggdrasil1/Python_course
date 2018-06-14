@@ -1,6 +1,6 @@
 import numpy as np
 import math
-
+import copy
 
 class Agent:
 
@@ -80,7 +80,8 @@ class Agent:
                     lifeloss -= 1
 
         self.health -= lifeloss
-
+	if self.health < 0:
+	    print("{} has died".format(self))
 
 
 
@@ -135,46 +136,57 @@ class Welt:
         if agent2.attack > agent1.attack:
             damage = math.ceil(agent2.attack / 3)
             if np.random.uniform(0,agent2.attack) > (agent1.attack / 2):
-                agent1.apply_dmg()
+                agent1.apply_dmg(damage)
             else:
-                agent2.apply_dmg()
+                agent2.apply_dmg(damage)
 
         elif agent1.attack > agent2.attack:
             damage = math.ceil(agent1.attack / 3)
             if np.random.uniform(0,agent1.attack) > (agent2.attack / 2):
-                agent2.apply_dmg()
+                agent2.apply_dmg(damage)
             else:
-                agent1.apply_dmg()
+                agent1.apply_dmg(damage)
 
         else:
             damage = agent1.attack / 2
             if np.random.uniform(0,1) > 0.5:
-                agent1.apply_dmg()
+                agent1.apply_dmg(damage)
             else:
-                agent2.apply_dmg()
+                agent2.apply_dmg(damage)
 
 
     def check_for_fights(self):
         for x_coordinate in range(self.x_dimension):
             for y_coordinate in range(self.y_dimension):
                 if len(self.map[(x_coordinate,y_coordinate)]) > 1:
+		    
+		    agentx_list = copy.deepcopy(self.map[(x_coordinate,y_coordinate)])
+		    agenty_list = copy.deepcopy(self.map[(x_coordinate,y_coordinate)])
 
-                    for agentx in my_welt.agents:
+                    for agentx in agentx_list:
+			if agentx.health > 0 and len(agentx_list)> 1:
+			    print(agentx_list)
+			    print(agentx)
+			    agenty_list = list(agentx_list).remove(agentx)
+			    print(agenty_list)
+			    for agenty in agenty_list:
+			        if agenty.health > 0:
+			            fight(agentx,agenty)
+				    print("{} and {} fight".format(agentx,agenty))
+			agentx_list.remove(agentx)
 
-
-        pass
+        
 
 if __name__ == "__main__":
     my_welt = Welt()
 
     my_welt.print_map()
 
-    for _ in range(20):
+    for _ in range(100):
         for agent in my_welt.agents:
           agent.move()
-        my_welt.update_world_map()
-        print("--------------------------------------------")
-        my_welt.print_map()
+	my_welt.update_world_map()
+	my_welt.check_for_fights()          
 
 
 
