@@ -70,6 +70,12 @@ class Agent:
     def __repr__(self):
         return "id.{}".format(self.id)
 
+    def __gt__(self, other):
+        if self.id > other.id:
+            return True
+        else:
+            return False
+
     def apply_dmg(self,damage):
         lifeloss = damage
         for _ in range(self.defense):
@@ -80,8 +86,8 @@ class Agent:
                     lifeloss -= 1
 
         self.health -= lifeloss
-	if self.health < 0:
-	    print("{} has died".format(self))
+        if self.health < 0:
+            print("{} has died".format(self))
 
 
 
@@ -89,12 +95,14 @@ class Welt:
 
     def __init__(self):
 
-        self.x_dimension = 10
-        self.y_dimension = 10
+        self.x_dimension = 5
+        self.y_dimension = 5
 
         self.agents = []
         for id in range(10):
             self.agents.append(Agent(id,self.x_dimension,self.y_dimension))
+
+        self.dead_agents = []
 
         self.map = {}
         self.update_world_map()
@@ -103,7 +111,6 @@ class Welt:
 
 
     def update_world_map(self):
-
         """creates a map from a dictionary with coordinates as keys"""
 
         for x_coordinate in range(self.x_dimension):
@@ -123,6 +130,7 @@ class Welt:
 
 
     def print_map(self):
+        """representation of the world map"""
 
         for row_map in range(self.y_dimension):
             print_string = ""
@@ -131,7 +139,11 @@ class Welt:
             print(print_string)
 
 
-    def fight(agent1,agent2):
+    def fight(self,agent1,agent2):
+        """decides which agent wins the fight,
+            applies the damage dealt
+        """
+
         damage = 0
         if agent2.attack > agent1.attack:
             damage = math.ceil(agent2.attack / 3)
@@ -156,39 +168,67 @@ class Welt:
 
 
     def check_for_fights(self):
+        """Search the map for patches with more than one agent,
+            let all agents on this patch fight each other
+        """
+
         for x_coordinate in range(self.x_dimension):
             for y_coordinate in range(self.y_dimension):
                 if len(self.map[(x_coordinate,y_coordinate)]) > 1:
-		    
-		    agentx_list = copy.deepcopy(self.map[(x_coordinate,y_coordinate)])
-		    agenty_list = copy.deepcopy(self.map[(x_coordinate,y_coordinate)])
+
+                    agentx_list = copy.deepcopy(self.map[(x_coordinate,y_coordinate)])
 
                     for agentx in agentx_list:
-			if agentx.health > 0 and len(agentx_list)> 1:
-			    print(agentx_list)
-			    print(agentx)
-			    agenty_list = list(agentx_list).remove(agentx)
-			    print(agenty_list)
-			    for agenty in agenty_list:
-			        if agenty.health > 0:
-			            fight(agentx,agenty)
-				    print("{} and {} fight".format(agentx,agenty))
-			agentx_list.remove(agentx)
 
-        
+                        if agentx.health > 0 and len(agentx_list)> 1:
+
+                            agenty_list = list(agentx_list)
+                            agenty_list.remove(agentx)
+
+                            for agenty in agenty_list:
+                                if agenty.health > 0:
+                                    self.fight(agentx,agenty)
+                                print("{} and {} fought".format(agentx,agenty))
+                        agentx_list.remove(agentx)
+
+    def check_for_survivors(self):
+        """Check for survivors
+         return True when atleast 2 are alive
+         return False and the winner when only 1 is alive
+        """
+
+        survivors = []
+
+        for agentx in self.agents:
+            if agentx.health <= 0:
+
+                self.agents.remove(agentx)
+                self.dead_agents.append(agentx)
+                print("{} is dead :(".format(agentx))
+            else:
+                survivors.append(agentx)
+
+        if len(survivors) <= 1:
+            return [False,survivors[0]]
+        else:
+            return [True]
 
 if __name__ == "__main__":
     my_welt = Welt()
 
     my_welt.print_map()
 
-    for _ in range(100):
+    for _ in range(500):
         for agent in my_welt.agents:
           agent.move()
-	my_welt.update_world_map()
-	my_welt.check_for_fights()          
+        my_welt.update_world_map()
+        my_welt.check_for_fights()
+        continue_fighting = my_welt.check_for_survivors()
+        if not continue_fighting[0]:
+            #print("we got a winner!: {}".format(continue_fighting[1]))
+            pass
 
 
 
     print("::::::::::::::::::::::::::::::::::::::::::::")
-    print(my_welt.agents[0].history)
+    #print(my_welt.agents[0].history)
