@@ -103,8 +103,6 @@ class Welt:
         for id in range(20):
             self.agents.append(Agent(id,self.x_dimension,self.y_dimension))
 
-        self.dead_agents = []
-
         self.map = {}
         self.update_world_map()
 
@@ -174,7 +172,6 @@ class Welt:
                 agent1.apply_dmg(damage)
             else:
                 agent2.apply_dmg(damage)
-
 
 
 

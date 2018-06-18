@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Agent:
 	def __init__(self):
@@ -33,3 +34,12 @@ if __name__ == "__main__":
 		agent.move()
 		print(agent.history)
 		print(agent.coordinate)
+	figure1 = plt.figure(figsize = (12,12))
+	for agent in my_model.agents:
+		plt.plot(agent.coordinate)
+
+	#plt.show()
+		
+		
+
+		
