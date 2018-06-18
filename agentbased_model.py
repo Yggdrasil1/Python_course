@@ -80,6 +80,7 @@ class Agent:
     def apply_dmg(self,damage):
         lifeloss = damage
         for _ in range(self.defense):
+
             if lifeloss == 1:
                 continue
             else:
@@ -235,8 +236,10 @@ if __name__ == "__main__":
     winner_stats = []
 
     for _ in range(100):
+
         my_welt = Welt()
         continue_fighting = True
+	
         while continue_fighting:
 
             for agent in my_welt.agents:
@@ -248,10 +251,7 @@ if __name__ == "__main__":
             continue_fighting = survival_check[0]
             my_welt.update_world_map()
             if not continue_fighting:
-                #print("we got a winner!: {}".format(survival_check[1]))
-                #print("att = {}".format(survival_check[1].attack))
-                #print("def = {}".format(survival_check[1].defense))
-                #print("health = {}".format(survival_check[1].health))
+               
                 winner_stats.append([survival_check[1].attack,survival_check[1].defense,survival_check[1].health])
 
     for element in winner_stats:
