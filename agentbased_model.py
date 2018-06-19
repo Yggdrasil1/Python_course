@@ -35,7 +35,9 @@ class Agent:
 
 
     def move(self):
-        """movement of the agents"""
+        """
+        movement of the agents
+        """
 
         if self.health > 0:
 
@@ -57,7 +59,8 @@ class Agent:
 
 
             self.update_position(x_coordinate,y_coordinate)
-
+            
+    
 
     def update_position(self, x_coordinate, y_coordinate):
 
@@ -107,6 +110,7 @@ class Welt:
         self.update_world_map()
 
         self.last_survivor = False
+        
 
 
     def update_world_map(self):
@@ -142,6 +146,96 @@ class Welt:
             for column_map in range(self.x_dimension):
                 print_string += str(self.map[(column_map,row_map)])
             print(print_string)
+            
+    def new_move(self):
+        
+        """
+        moves the agents
+        """
+        
+        for agentx in self.agents:
+            x_coordinate = agentx.coordinate[0]
+            y_coordinate = agentx.coordinate[1]
+            
+            move_vector = self.find_movement(agentx)
+            
+            x_coordinate += move_vector[0]
+            y_coordinate += move_vector[1]
+            
+            if x_coordinate < 0:
+                x_coordinate = self.x_dimension - 1
+            if x_coordinate > self.x_dimension - 1:
+                x_coordinate = 0
+
+            if y_coordinate < 0:
+                y_coordinate = self.y_dimension - 1
+            if y_coordinate > self.y_dimension - 1:
+                y_coordinate = 0
+                
+            
+            agentx.update_position(x_coordinate,y_coordinate)
+            
+            
+    def find_movement(self,agentx):
+        
+        """
+        finds the closest other agent
+        if no agent in radius < = 3: random movement
+        else: moves towards this agent 
+        :returns: direction vector (tupel)        
+        """
+        
+        min_dist = 100
+        closest_agent = agentx        
+        
+        for agenty in self.agents:
+            if agentx != agenty:
+                dist = self.distance(agentx.coordinate, agenty.coordinate)
+                if dist < min_dist:
+                    closest_agent = agenty
+                    min_dist = dist
+        
+        if min_dist < 3:            
+            x_vec = 0
+            y_vec = 0
+            
+            if closest_agent.coordinate[0] < agentx.coordinate[0]:
+                x_vec = -1
+            elif closest_agent.coordinate[0] == agentx.coordinate[0]:
+                x_vec = 0
+            else:
+                x_vec = 1
+                
+                
+            if closest_agent.coordinate[1] < agentx.coordinate[1]:
+                y_vec = -1
+            elif closest_agent.coordinate[1] == agentx.coordinate[1]:
+                y_vec = 0
+            else:
+                y_vec = 1
+                
+        else:
+            
+            x_vec = np.random.randint(-1,2)            
+            y_vec = np.random.randint(-1,2)
+            
+        movement_vector = (x_vec,y_vec)
+        
+        return movement_vector
+
+        
+    def distance(self,coordinate1,coordinate2):
+        """
+        calculates the euclidian distance between two coordinates
+        :returns: distance (float)
+        """
+
+        delta_x = abs(coordinate1[0] - coordinate2[0])
+        delta_y = abs(coordinate1[1] - coordinate2[1])
+
+        distance = math.sqrt(delta_x**2 + delta_y**2)        
+        
+        return distance
 
 
     def fight(self,agent1,agent2):
@@ -239,8 +333,7 @@ if __name__ == "__main__":
 	
         while continue_fighting:
 
-            for agent in my_welt.agents:
-              agent.move()
+            my_welt.new_move()
             my_welt.update_world_map()
             my_welt.improved_fights()
 
