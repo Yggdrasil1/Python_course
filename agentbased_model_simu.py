@@ -11,6 +11,7 @@ import copy
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+import random
 
 class Agent:
 
@@ -113,45 +114,8 @@ class Welt:
         for id in range(20):
             self.agents.append(Agent(id,self.x_dimension,self.y_dimension))
 
-        self.map = {}
-        self.update_world_map()
-
         self.last_survivor = False
 
-
-    def update_world_map(self):
-
-        """
-        creates a map from a dictionary with coordinates as keys
-        """
-
-        for x_coordinate in range(self.x_dimension):
-            for y_coordinate in range(self.y_dimension):
-                key = (x_coordinate,y_coordinate)
-                self.map[key] = ["--"]
-
-        for agent in self.agents:
-
-            if agent.health > 0:
-                x_coordinate = agent.coordinate[0]
-                y_coordinate = agent.coordinate[1]
-
-                if self.map[(x_coordinate, y_coordinate)] == ["--"]:
-                    self.map[(x_coordinate, y_coordinate)]=[]
-                self.map[(x_coordinate,y_coordinate)].append(agent)
-
-
-    def print_map(self):
-
-        """
-        representation of the world map
-        """
-
-        for row_map in range(self.y_dimension):
-            print_string = ""
-            for column_map in range(self.x_dimension):
-                print_string += str(self.map[(column_map,row_map)])
-            print(print_string)
             
     def new_move(self):
         
@@ -206,24 +170,24 @@ class Welt:
             y_vec = 0
             
             if closest_agent.coordinate[0] < agentx.coordinate[0]:
-                x_vec = -1
+                x_vec = random.uniform(-0.3,0)
             elif closest_agent.coordinate[0] == agentx.coordinate[0]:
                 x_vec = 0
             else:
-                x_vec = 1
+                x_vec = random.uniform(0,0.3)
                 
                 
             if closest_agent.coordinate[1] < agentx.coordinate[1]:
-                y_vec = -1
+                y_vec = random.uniform(-0.3,0)
             elif closest_agent.coordinate[1] == agentx.coordinate[1]:
                 y_vec = 0
             else:
-                y_vec = 1
+                y_vec = random.uniform(0,0.3)
                 
         else:
             
-            x_vec = np.random.randint(-1,2)            
-            y_vec = np.random.randint(-1,2)
+            x_vec = random.uniform(-1,1.1)            
+            y_vec = random.uniform(-1,1.1)
             
         movement_vector = (x_vec,y_vec)
         
@@ -281,7 +245,6 @@ class Welt:
         """
         Check if two agents are on the same coordinate
         If so they fight.
-
         :return: None
         """
 
@@ -291,7 +254,7 @@ class Welt:
 
                 if agentx != agenty:
 
-                    if agentx.coordinate == agenty.coordinate:
+                    if self.distance(agentx.coordinate, agenty.coordinate) < 0.1:
 
                         self.fight(agentx, agenty)
                         #print("{} and {} fought!!!".format(agentx, agenty))
@@ -304,7 +267,7 @@ class Welt:
                         if agenty.health <= 0:
                             if agentx in self.agents:
                                 self.agents.remove(agenty)
-                            #print(self.agents)
+                           
 
 
 
@@ -344,19 +307,22 @@ class Welt:
 
             self.new_move()
                 
-            self.update_world_map()
             self.improved_fights()
 
             survival_check= self.check_for_survivors()
             continue_fighting = survival_check[0]
-            my_welt.update_world_map()
             
             ax.clear()  # clear the drawing/plotting area
             ax.set_title('Time: {} sec'.format(t))  # setting the figure title
             ax.set_xlim(0, 20)
             ax.set_ylim(0, 20)
             for agent in self.agents:
-                    ax.scatter(agent.coordinate[0], agent.coordinate[1], color='k')  # plotting current positions
+                
+                    if agent.health < 2:
+                        ccol = 'r'
+                    else:
+                        ccol = 'k'
+                    ax.scatter(agent.coordinate[0], agent.coordinate[1], color=ccol)  # plotting current positions
             
                     # getting last positions
                     x_hist = [pos[0] for pos in agent.history]
