@@ -60,5 +60,5 @@ class Model:
 
 
 if __name__ == "__main__":
-    my_model = Model(N=10)
-    my_model.simulate(time_steps=50, visualize=True)
+    my_model = Model(N=100)
+    my_model.simulate(time_steps=500, visualize=True)
