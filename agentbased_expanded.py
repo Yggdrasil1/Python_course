@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib
+matplotlib.use('TkAgg')
+
 import matplotlib.pyplot as plt
 
 
@@ -60,5 +63,10 @@ class Model:
 
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     my_model = Model(N=100)
     my_model.simulate(time_steps=500, visualize=True)
+=======
+    my_model = Model(N=10)
+    my_model.simulate(time_steps=100, visualize=True)
+>>>>>>> 5674bab13675f419fbf19cf4aa8a2f685bbc1798

@@ -1,6 +1,17 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jun 18 17:22:02 2018
+
+@author: biostudent216
+"""
+
 import numpy as np
 import math
 import copy
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
+import random
 
 class Agent:
 
@@ -35,23 +46,21 @@ class Agent:
 
 
     def move(self):
-        """
-        movement of the agents
-        """
+        """movement of the agents"""
 
         if self.health > 0:
 
             x_coordinate = self.coordinate[0]
             y_coordinate = self.coordinate[1]
 
-            x_coordinate += np.random.randint(-1,1)
+            x_coordinate += np.random.randint(-1,2)
             if x_coordinate < 0:
                 x_coordinate = self.max_x - 1
             if x_coordinate > self.max_x - 1:
                 x_coordinate = 0
 
 
-            y_coordinate += np.random.randint(-1,1)
+            y_coordinate += np.random.randint(-1,2)
             if y_coordinate < 0:
                 y_coordinate = self.max_y - 1
             if y_coordinate > self.max_y - 1:
@@ -59,8 +68,7 @@ class Agent:
 
 
             self.update_position(x_coordinate,y_coordinate)
-            
-    
+
 
     def update_position(self, x_coordinate, y_coordinate):
 
@@ -99,53 +107,15 @@ class Welt:
 
     def __init__(self):
 
-        self.x_dimension = 10
-        self.y_dimension = 10
+        self.x_dimension = 20
+        self.y_dimension = 20
 
         self.agents = []
         for id in range(20):
             self.agents.append(Agent(id,self.x_dimension,self.y_dimension))
 
-        self.map = {}
-        self.update_world_map()
-
         self.last_survivor = False
-        
 
-
-    def update_world_map(self):
-
-        """
-        creates a map from a dictionary with coordinates as keys
-        """
-
-        for x_coordinate in range(self.x_dimension):
-            for y_coordinate in range(self.y_dimension):
-                key = (x_coordinate,y_coordinate)
-                self.map[key] = ["--"]
-
-        for agent in self.agents:
-
-            if agent.health > 0:
-                x_coordinate = agent.coordinate[0]
-                y_coordinate = agent.coordinate[1]
-
-                if self.map[(x_coordinate, y_coordinate)] == ["--"]:
-                    self.map[(x_coordinate, y_coordinate)]=[]
-                self.map[(x_coordinate,y_coordinate)].append(agent)
-
-
-    def print_map(self):
-
-        """
-        representation of the world map
-        """
-
-        for row_map in range(self.y_dimension):
-            print_string = ""
-            for column_map in range(self.x_dimension):
-                print_string += str(self.map[(column_map,row_map)])
-            print(print_string)
             
     def new_move(self):
         
@@ -200,24 +170,24 @@ class Welt:
             y_vec = 0
             
             if closest_agent.coordinate[0] < agentx.coordinate[0]:
-                x_vec = -1
+                x_vec = random.uniform(-0.3,0)
             elif closest_agent.coordinate[0] == agentx.coordinate[0]:
                 x_vec = 0
             else:
-                x_vec = 1
+                x_vec = random.uniform(0,0.3)
                 
                 
             if closest_agent.coordinate[1] < agentx.coordinate[1]:
-                y_vec = -1
+                y_vec = random.uniform(-0.3,0)
             elif closest_agent.coordinate[1] == agentx.coordinate[1]:
                 y_vec = 0
             else:
-                y_vec = 1
+                y_vec = random.uniform(0,0.3)
                 
         else:
             
-            x_vec = np.random.randint(-1,2)            
-            y_vec = np.random.randint(-1,2)
+            x_vec = random.uniform(-1,1.1)            
+            y_vec = random.uniform(-1,1.1)
             
         movement_vector = (x_vec,y_vec)
         
@@ -275,7 +245,6 @@ class Welt:
         """
         Check if two agents are on the same coordinate
         If so they fight.
-
         :return: None
         """
 
@@ -285,7 +254,7 @@ class Welt:
 
                 if agentx != agenty:
 
-                    if agentx.coordinate == agenty.coordinate:
+                    if self.distance(agentx.coordinate, agenty.coordinate) < 0.1:
 
                         self.fight(agentx, agenty)
                         #print("{} and {} fought!!!".format(agentx, agenty))
@@ -298,7 +267,7 @@ class Welt:
                         if agenty.health <= 0:
                             if agentx in self.agents:
                                 self.agents.remove(agenty)
-                            #print(self.agents)
+                           
 
 
 
@@ -321,35 +290,56 @@ class Welt:
             return [False,survivors[0]]
         else:
             return [True]
+            
+    def simulate(self):
+        
+        continue_fighting = True
+        
+        fig = plt.figure(1, figsize=(12, 12))  # create figure with figure size
+        ax = plt.subplot()  # create subplot to be able to change plot without changing figure object
+        ax.set_xlim(0, 20)  # set limits of plot area
+        ax.set_ylim(0, 20)  
+        plt.show(block=False) 
+        
+        t = 0        
+        
+        while continue_fighting:
+
+            self.new_move()
+                
+            self.improved_fights()
+
+            survival_check= self.check_for_survivors()
+            continue_fighting = survival_check[0]
+            
+            ax.clear()  # clear the drawing/plotting area
+            ax.set_title('Time: {} sec'.format(t))  # setting the figure title
+            ax.set_xlim(0, 20)
+            ax.set_ylim(0, 20)
+            for agent in self.agents:
+                
+                    if agent.health < 2:
+                        ccol = 'r'
+                    else:
+                        ccol = 'k'
+                    ax.scatter(agent.coordinate[0], agent.coordinate[1], color=ccol)  # plotting current positions
+            
+                    # getting last positions
+                    x_hist = [pos[0] for pos in agent.history]
+                    y_hist = [pos[1] for pos in agent.history]
+            
+                    ax.scatter(x_hist[-2:-1], y_hist[-2:-1], alpha=0.2, color='k')  # plot last 7 timepoints transparantly
+            fig.canvas.draw()  # draw plot
+            t += 1
 
 if __name__ == "__main__":
 
-    winner_stats = []
 
-    for _ in range(100):
-
-        my_welt = Welt()
-        continue_fighting = True
+    my_welt = Welt()
+    
+    my_welt.simulate()
 	
-        while continue_fighting:
+    
+            
 
-            my_welt.new_move()
-            my_welt.update_world_map()
-            my_welt.improved_fights()
-
-            survival_check= my_welt.check_for_survivors()
-            continue_fighting = survival_check[0]
-            my_welt.update_world_map()
-            if not continue_fighting:
-               
-                winner_stats.append([survival_check[1].attack,survival_check[1].defense,survival_check[1].health])
-
-    for element in winner_stats:
-
-        print(element)
-
-    print("attack: ", np.average(winner_stats[:][0]))
-    print("defense: ", np.average(winner_stats[:][1]))
-    print("health: ", np.average(winner_stats[:][2]))
-
-
+   
