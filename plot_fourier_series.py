@@ -19,13 +19,13 @@ def simulation(axis,array):
     ax.set_xlabel("Phase")
     ax.set_ylabel("Amplitude")
 
-    #plt.show(block=False) 
+    plt.show(block=False) 
     
-    plt.plot(x_axis,rechteck[3])
-    fig.canvas.draw()
+    #plt.plot(x_axis,rechteck[3])
+    #fig.canvas.draw()
     
-    for _ in range(4):    
-        for l in range(len(array)):
+    #for _ in range(4):    
+    for l in range(len(array)):
             
             ax.clear()  # clear the drawing/plotting area
             ax.set_title('Plot {}'.format(l))
