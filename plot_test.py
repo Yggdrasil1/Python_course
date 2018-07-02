@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 fig = plt.figure(figsize=(25,10))
 
-ax = fig.add_subplot(3,3,1)
+ax = fig.add_subplot(1,1,1)
 
 ax.plot(range(10),range(0,20,2),Lw=2,c='red',label='myLine')
 ax.scatter(range(10,20,1),range(0,20,2),s=40,c='blue',label='myScatter')
